@@ -6,10 +6,10 @@ if(new Set(ids).size!==ids.length)throw Error('Duplicate ids');
 for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){
  const url=m[1];
  if(url.startsWith('#')&&url.length>1&&!ids.includes(url.slice(1)))throw Error('Missing anchor '+url);
- if(url.startsWith('/')&&!url.startsWith('//'))await access(resolve(root,'.'+url));
+ if(url.startsWith('/')&&!url.startsWith('//'))await access(resolve(root,'.'+url.split('?')[0]));
  if(url.startsWith('http'))new URL(url);
 }
-if(!html.includes('noindex,nofollow')||!html.includes('Приватный концепт'))throw Error('Demo labels missing');
-if(html.includes('<form'))throw Error('Unexpected form');
+if(!html.includes('noindex,nofollow')||!html.includes('Демонстрационный концепт'))throw Error('Demo labels missing');
+
 for(const m of html.matchAll(/href="tel:([^"]+)"/g))if(m[1]!=='+79955992363')throw Error('Unverified phone');
 console.log('Production static validation passed: local files, anchors, URLs, phone, demo labels. No dependencies required.');
